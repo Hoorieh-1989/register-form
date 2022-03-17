@@ -1,27 +1,50 @@
 import { useRef, useState, useEffect } from "react";
 import React from "react";
 import "../App.css";
-import "./login.css";
 
-export default function Form() {
-    // States for registration
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
+
+const Login = () => {
+  const [name, setName] = useState( [], () => {      
+    const localData = localStorage.setItem ('name'); 
+    return localData ? JSON.parse(localData) : [];
+  });                                                        
+  const [password, setPassword] = useState( [], () => {
+    const localData = localStorage.setItem ('password');
+    return localData ? JSON.parse(localData) : [];
+  });     
+    
+
+ 
   
+
+  useEffect(() => {         
+      setErrors('');
+  }, [name, password])
+
+  useEffect (()=> {
+    localStorage.setItem('name', JSON.stringify(name))                         //localstorage
+    localStorage.setItem('password', JSON.stringify(password))
+  }, [name, password]);  
+
+
+  
+
+
+    
     // States for checking the errors
-    const [submitted, setSubmitted] = useState(false);
+    const [submitted, setSubmitted] = useState();
     const [errors, setErrors] = useState("");
   
-    const [validName, setValidName] = useState(false);
-    const [validPwd, setValidPwd] = useState(false);
+    const [validName, setValidName] = useState();
+    const [validPwd, setValidPwd] = useState();
    
   
     const userRef = useRef();
     const errRef = useRef();
   
     useEffect(() => {
-      setValidName(false);
-      setValidPwd(false);
+      setValidName();
+      setValidPwd();
       setErrors("");
     }, [name, password]);
   
@@ -49,7 +72,13 @@ export default function Form() {
         if (!hasError) {
           
             setSubmitted(true)
-        }
+      
+  
+      }else{
+        localStorage.setItem('name');
+        localStorage.setItem('password');
+        console.log("Saved in Local Storage");
+      }
   
     };
   
@@ -57,7 +86,7 @@ export default function Form() {
       <>
         {submitted ? (
           <section>
-            <h1>User {name} successfully registered!!</h1>
+            <h1>User {name} successfully Logged in !!</h1>
             <br />
             <p>
               <a href="/">Go to Home</a>
@@ -100,6 +129,7 @@ export default function Form() {
                 type="password"
                 id="password"
                 ref={userRef}
+                
                 autoComplete="off"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password} // clear input
@@ -107,7 +137,8 @@ export default function Form() {
   
     <button>Sign In</button>
 
-        <p>
+        <p id="one">
+          
             Not yet member?
             <br />
                 <span className="line">
@@ -126,4 +157,4 @@ export default function Form() {
       </>
     );
   }
-  
+  export default Login;

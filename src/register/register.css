@@ -7,7 +7,7 @@
 }
 
 html {
-    font-family:Georgia, 'Times New Roman', Times, serif;
+   
     font-style: italic;
     font-size: 22px;
     color: rgb(156, 100, 198);
@@ -67,7 +67,7 @@ button {
 
 button{
 background-color: rgb(242, 226, 197);
-box-shadow: 0 3px rgb(58 87 175 / 75%);
+
     transition: all 0.1s linear 0s;
     top: 0px;
     position: relative;
@@ -112,15 +112,20 @@ p{
 p.errmsg{
     border-radius: 10px;
     color: red;
+    background-color: beige;
+    text-align: center;
+    padding:0%;
+    
     
 }
 p{
     color: beige;
     font-family: fantasy;
-  padding-right: 25%;
+    padding-right: 25%;
 
 }
 form{
 align-items: center;
-
+padding-bottom: 20px;
 }
+
