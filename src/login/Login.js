@@ -1,25 +1,24 @@
-import { useRef, useState, useEffect } from "react";
+import {  useState, useEffect } from "react";
 import React from "react";
 import "../App.css";
 
 
 const Login = () => {
   const [name, setName] = useState( [], () => {      
-    const localData = localStorage.setItem ('name'); 
+    const localData = localStorage.getItem ('name'); 
     return localData ? JSON.parse(localData) : [];
   });                                                        
   const [password, setPassword] = useState( [], () => {
-    const localData = localStorage.setItem ('password');
+    const localData = localStorage.getItem ('password');
     return localData ? JSON.parse(localData) : [];
   });     
     
 
- 
-  
 
-  useEffect(() => {         
-      setErrors('');
-  }, [name, password])
+ 
+  useEffect(() => {
+    setErrors("");
+  }, [name, password]);
 
   useEffect (()=> {
     localStorage.setItem('name', JSON.stringify(name))                         //localstorage
@@ -28,25 +27,20 @@ const Login = () => {
 
 
   
-
-
-    
-    // States for checking the errors
-    const [submitted, setSubmitted] = useState();
-    const [errors, setErrors] = useState("");
   
+     // States for checking the errors
+     const [submitted, setSubmitted] = useState(false);
+     const [errors, setErrors] = useState("");
+
     const [validName, setValidName] = useState();
     const [validPwd, setValidPwd] = useState();
-   
-  
-    const userRef = useRef();
-    const errRef = useRef();
   
     useEffect(() => {
       setValidName();
       setValidPwd();
       setErrors("");
     }, [name, password]);
+  
   
     function validateForm() {
       let hasErrors = false;
@@ -66,19 +60,14 @@ const Login = () => {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+
   
       //Validate user input
         const hasError = validateForm();
         if (!hasError) {
-          
             setSubmitted(true)
       
-  
-      }else{
-        localStorage.setItem('name');
-        localStorage.setItem('password');
-        console.log("Saved in Local Storage");
-      }
+        }
   
     };
   
@@ -95,7 +84,7 @@ const Login = () => {
         ) : (
           <section>
             <p
-              ref={errRef}
+             
               className={setErrors ? "errors" : "offscreen"}
               aria-live="assertive"
             ></p>
@@ -107,16 +96,18 @@ const Login = () => {
                 <p className="errmsg" aria-live="assertive">
                   {errors}
                 </p>
+
               )}
               <label htmlFor="username">Username:</label>
               <input
                 type="text"
                 id="username"
-                ref={userRef}
                 autoComplete="off"
                 onChange={(e) => setName(e.target.value)}
-                value={name} // clear input
+                value={name}
+                required // clear input
               />
+              
   
               <br />
               {validPwd && (
@@ -128,11 +119,10 @@ const Login = () => {
               <input
                 type="password"
                 id="password"
-                ref={userRef}
-                
                 autoComplete="off"
                 onChange={(e) => setPassword(e.target.value)}
-                value={password} // clear input
+                value={password} 
+                required// clear input
               />
   
     <button>Sign In</button>
@@ -146,10 +136,7 @@ const Login = () => {
                 </span>
     </p>
 </form>
-              
-  
-             
-               
+                 
             
             
           </section>

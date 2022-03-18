@@ -3,15 +3,15 @@ import "./register.css";
 
 const Register = () => {
   const [name, setName] = useState( [], () => {      
-    const localData = localStorage.getItem ('name'); 
+    const localData = localStorage.setItem ('name'); 
     return localData ? JSON.parse(localData) : [];
   });                                                        
   const [password, setPassword] = useState( [], () => {
-    const localData = localStorage.getItem ('password');
+    const localData = localStorage.setItem ('password');
     return localData ? JSON.parse(localData) : [];
   });     
   const [emails, setEmails] = useState( [], () => {
-    const localData = localStorage.getItem ('emails');
+    const localData = localStorage.setItem ('emails');
     return localData ? JSON.parse(localData) : [];
   });   
 
@@ -20,7 +20,7 @@ const Register = () => {
 
   useEffect(() => {         
       setErrors('');
-  }, [name, password])
+  }, [name, password,emails])
 
   useEffect (()=> {
     localStorage.setItem('name', JSON.stringify(name))                         //localstorage
@@ -30,7 +30,7 @@ const Register = () => {
 
 
 
-  // States for registration
+
  
   const [lastname, setLast] = useState("");
  
@@ -45,7 +45,7 @@ const Register = () => {
   const [validEmail, setValidEmail] = useState();
   
   const userRef = useRef();
-  const errRef = useRef();
+  
 
   
 
@@ -56,7 +56,7 @@ const Register = () => {
     setValidEmail();
     setValidPwd();
     setErrors("");
-  }, [name,lastname, password, emails]);
+  }, [name,lastname]);
 
 
 
@@ -80,21 +80,8 @@ const Register = () => {
         return hasErrors;
       }
       
-    if (!password) {
-      setValidPwd(true);
-      setErrors("Enter valid password");
-      hasErrors = true;
-      return hasErrors;
-      }
-  
-      
-
-    if (!emails) {
-      setValidEmail(true);
-      setErrors("Enter valid Email");
-      hasErrors = true;
-      return hasErrors;
-    }
+    
+   
     
   }
   
@@ -103,15 +90,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
     //Validate user input
       const hasError = validateForm();
       if (!hasError) {
         
           setSubmitted(true)
     
-
-      
-
   };
 }
 
@@ -128,7 +113,7 @@ const Register = () => {
       ) : (
         <section>
           <p
-            ref={errRef}
+            ref={userRef}
             className={setErrors ? "errors" : "offscreen"}
             aria-live="assertive"
           ></p>
@@ -136,15 +121,16 @@ const Register = () => {
 
           <form onSubmit={handleSubmit}>
             <br />
+
             {validName && (
               <p className="errmsg" aria-live="assertive">
                 {errors}
               </p>
             )}
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="name">Username:</label>
             <input
               type="text"
-              id="username"
+              id="name"
               ref={userRef}
               autoComplete="off"
               onChange={(e) => setName(e.target.value)}
@@ -182,7 +168,8 @@ const Register = () => {
             
               autoComplete="off"
               onChange={(e) => setPassword(e.target.value)}
-              value={password} // clear input
+              value={password}
+              required // clear input
             />
 
             <br />
@@ -191,14 +178,16 @@ const Register = () => {
                 {errors}
               </p>
             )}
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="emails">Email:</label>
             <input
               type="text"
               id="emails"
               ref={userRef}
               autoComplete="off"
               onChange={(e) => setEmails(e.target.value)}
-              value={emails} // clear input
+              value={emails}
+              required
+               // clear input
             />
 
             <button>Register</button>
